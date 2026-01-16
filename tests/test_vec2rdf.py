@@ -3,7 +3,7 @@ import subprocess
 import sys
 import tempfile
 
-from rdflib import Graph, Namespace, RDF
+from rdflib import Graph, Namespace, RDF, URIRef
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -44,7 +44,7 @@ def test_vec2rdf_cli_generates_valid_turtle_and_passes_shacl():
         assert "SHACL Validation: PASS" in proc.stdout
 
         g = Graph().parse(out, format="turtle")
-        dataset_iri = "http://example.org/" + VEC_FILE.stem
+        dataset_iri = URIRef("http://example.org/" + VEC_FILE.stem)
 
         assert (dataset_iri, RDF.type, PIV.PIVDataset) in g
         # Ensure the minimum structural links exist.
