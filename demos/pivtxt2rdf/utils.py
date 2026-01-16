@@ -1,6 +1,8 @@
+import pathlib
 import re
 
 import pypdf
+import requests
 from rdflib import Graph
 
 COMMENT_RE = re.compile(r'(?m)^\s*#.*\n?')  # full-line comments
@@ -46,3 +48,13 @@ def pdf2text(pdf_path: str) -> str:
     reader = pypdf.PdfReader(pdf_path)
     text = [page.extract_text() for page in reader.pages]
     return "\n".join(text)
+
+
+def download_github_file(url: str, target_filename) -> pathlib.Path:
+    """
+    Download a file from a GitHub raw URL.
+    """
+    with open(target_filename, "wb") as f:
+        f.write(requests.get(url).content)
+
+    return pathlib.Path(target_filename)

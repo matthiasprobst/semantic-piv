@@ -10,12 +10,15 @@ import dotenv
 from openai import OpenAI  # For API compatibility
 from pyshacl import validate
 from rdflib import Graph
-from utils import compact_turtle_file
-dotenv.load_dotenv(".env")
+
+from demos.pivtxt2rdf.utils import compact_turtle_file
+
+dotenv.load_dotenv(pathlib.Path.home() / ".env")
 
 # read the system prompt:
 with open(pathlib.Path(__file__).parent / 'SYSTEM_PROMPT.txt', 'r', encoding='utf-8') as f:
     SYSTEM_PROMPT = f.read()
+
 
 def _get_token():
     token = os.getenv('CHATGPT_TOKEN') or os.getenv('OPENAI_API_KEY')
@@ -25,18 +28,7 @@ def _get_token():
     return token
 
 
-@click.command()
-@click.argument('input_file')
-@click.argument('ontology_file')
-@click.option("--prompt-only", is_flag=True, help="Only output the LLM prompt and exit")
-@click.option("--base-uri", default="http://example.org/", help="Base URI for minting IRIs")
-@click.option('--llm-url',
-              default='https://api.openai.com/v1',
-              help='LLM API base URL (default: OpenAI ChatGPT API https://api.openai.com/v1)')
-@click.option('--model',
-              default='gpt-5.2',
-              help='LLM model name (default: ChatGPT-like gpt-5.2)')
-def main(input_file, ontology_file, prompt_only, base_uri, llm_url, model):
+def txt2rdf(input_file, ontology_file, prompt_only, base_uri, llm_url, model):
     # Read files
     if pathlib.Path(input_file).suffix.lower() == '.pdf':
         from utils import pdf2text
@@ -73,14 +65,15 @@ TASK
 - Output ONLY raw Turtle RDF now (instance data + needed @prefix lines).
 
 OUTPUT (Turtle only, no comments, no prose):
-"""
+    """
+
+    with open('llm_system_prompt.txt', 'w', encoding='utf-8') as f:
+        f.write(SYSTEM_PROMPT)
+    with open('llm_user_prompt.txt', 'w', encoding='utf-8') as f:
+        f.write(USER_PROMPT)
+    print("LLM prompt saved to llm_prompt.txt")
 
     if prompt_only:
-        with open('llm_system_prompt.txt', 'w', encoding='utf-8') as f:
-            f.write(SYSTEM_PROMPT)
-        with open('llm_user_prompt.txt', 'w', encoding='utf-8') as f:
-            f.write(USER_PROMPT)
-        print("LLM prompt saved to llm_prompt.txt")
         sys.exit(0)
 
     # Call LLM
@@ -93,10 +86,9 @@ OUTPUT (Turtle only, no comments, no prose):
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": USER_PROMPT},
         ],
-        temperature=0.1,  # Low for determinism
+        temperature=0.01,  # Low for determinism
     )
     ttl_str = response.choices[0].message.content.strip()
-
 
     with open('llm_generated_output.ttl', 'w', encoding='utf-8') as f:
         f.write(ttl_str)
@@ -128,7 +120,6 @@ OUTPUT (Turtle only, no comments, no prose):
             f.write(v_text)
         print("Validation report saved to shacl_validation_report.ttl and .txt")
 
-
     print(f"Please find the output file at 'llm_generated_output.ttl'. Next, you may check the TTL file by inserting "
           f"it RDF playgrounds like here: https://rdfplayground.dcc.uchile.cl/")
     # # Output final TTL
@@ -141,6 +132,21 @@ OUTPUT (Turtle only, no comments, no prose):
     # with open(output_filename, 'w', encoding="utf-8") as f:
     #     f.write(final_ttl)
     # print(f"\nSaved to {output_filename}")
+
+
+@click.command()
+@click.argument('input_file')
+@click.argument('ontology_file')
+@click.option("--prompt-only", is_flag=True, help="Only output the LLM prompt and exit")
+@click.option("--base-uri", default="http://example.org/", help="Base URI for minting IRIs")
+@click.option('--llm-url',
+              default='https://api.openai.com/v1',
+              help='LLM API base URL (default: OpenAI ChatGPT API https://api.openai.com/v1)')
+@click.option('--model',
+              default='gpt-5.2',
+              help='LLM model name (default: ChatGPT-like gpt-5.2)')
+def main(input_file, ontology_file, prompt_only, base_uri, llm_url, model):
+    txt2rdf(input_file, ontology_file, prompt_only, base_uri, llm_url, model)
 
 
 if __name__ == '__main__':
