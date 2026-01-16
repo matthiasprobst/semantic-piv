@@ -37,6 +37,11 @@ Prerequisites:
    pip install -r requirements.txt
    ```
 
+  If you prefer `uv` (faster installs):
+  ```bash
+  uv pip install -r requirements.txt
+  ```
+
 4. Provide a `.env` file with your OpenAI API key:
    ```
    OPENAI_API_KEY=your_openai_api_key_here
@@ -46,6 +51,16 @@ Prerequisites:
    ```bash
    python .\main.py .\data\piv_challenge_01_case_a.html .\ontologies\pivmeta.ttl
     ```
+
+## .vec header → RDF (deterministic)
+
+If you have an Insight-style `.vec` file, you can generate RDF deterministically from its header (no LLM) using:
+
+```bash
+python ./vec2rdf.py /path/to/file.vec ./ontologies/pivmeta.ttl --base-uri http://example.org/
+```
+
+Add `--show-header` to print what gets extracted, and `--no-validate` to skip SHACL validation.
    
 The example result for a CLI call like `python .\main.py .\data\piv_challenge_01_case_a.html .\ontologies\pivmeta.ttl`, 
 which uses the sample PIV Challenge dataset Case A with the PIVMeta ontology can look like this:

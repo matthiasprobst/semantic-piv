@@ -1,0 +1,5 @@
+TITLE="/tmp/sample_insight.vec" VARIABLES="X pixel", "Y pixel", "U pixel", "V pixel", "CHC" DATASETAUXDATA Application="PIV" DATASETAUXDATA SourceImageWidth="4008" DATASETAUXDATA SourceImageHeight="2672" DATASETAUXDATA LengthUnit="pixel" DATASETAUXDATA OriginInImageX="0.0" DATASETAUXDATA OriginInImageY="2671.0" DATASETAUXDATA MicrosecondsPerDeltaT="55000.0" DATASETAUXDATA TimeUnit="deltaT" ZONE I=2, J=2, F=POINT
+0.0, 0.0, 0.1, -0.1, 1
+1.0, 0.0, 0.2, -0.2, 1
+0.0, 1.0, 0.3, -0.3, 1
+1.0, 1.0, 0.4, -0.4, 1

@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m4i: <http://w3id.org/nfdi4ing/metadata4ing#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix piv: <https://matthiasprobst.github.io/pivmeta#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/day2a005000.T000.D000.P003.H001.L> a piv:PIVDataset ;
+    obo:BFO_0000051 [ a piv:ImageVelocimetryDistribution ;
+            piv:hasMetric [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 55000.0 ;
+                    skos:prefLabel "delta_t" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 0.0 ;
+                    skos:prefLabel "OriginInImageX" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 2672.0 ;
+                    skos:prefLabel "SourceImageHeight" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 0.0 ;
+                    skos:prefLabel "DewarpedImageSource" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 0.0 ;
+                    skos:prefLabel "SecondaryPeakNumber" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 41.0 ;
+                    skos:prefLabel "ZONE_I" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 43.0 ;
+                    skos:prefLabel "rows" ],
+                [ a m4i:TextVariable ;
+                    m4i:hasValue "X,Y,U,V,CHC" ;
+                    skos:prefLabel "variables" ],
+                [ a m4i:TextVariable ;
+                    m4i:hasValue "pixel,pixel,pixel,pixel," ;
+                    skos:prefLabel "units" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 2671.0 ;
+                    skos:prefLabel "OriginInImageY" ],
+                [ a m4i:TextVariable ;
+                    m4i:hasValue "deltaT" ;
+                    skos:prefLabel "TimeUnit" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 55000.0 ;
+                    skos:prefLabel "MicrosecondsPerDeltaT" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 41.0 ;
+                    skos:prefLabel "cols" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 43.0 ;
+                    skos:prefLabel "ZONE_J" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 5000.0 ;
+                    skos:prefLabel "frame" ],
+                [ a m4i:NumericalVariable ;
+                    m4i:hasNumericalValue 4008.0 ;
+                    skos:prefLabel "SourceImageWidth" ],
+                [ a m4i:TextVariable ;
+                    m4i:hasValue "PIV" ;
+                    skos:prefLabel "Application" ],
+                [ a m4i:TextVariable ;
+                    m4i:hasValue "pixel" ;
+                    skos:prefLabel "LengthUnit" ] ;
+            piv:hasPIVDataType [ a piv:PIVDataType ] ] ;
+    dcterms:description "C:\\Experiments7\\cavity_bifurcation\\day2a\\Analysis\\day2a005000.T000.D000.P003.H001.L.vec" ;
+    dcterms:title "day2a005000.T000.D000.P003.H001.L" ;
+    piv:hasSetup [ a piv:Setup ] .
+

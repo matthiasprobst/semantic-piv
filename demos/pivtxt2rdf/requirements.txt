@@ -2,3 +2,4 @@ click
 openai
 pyshacl
 requests
+pivpy @ git+https://github.com/alexlib/pivpy
