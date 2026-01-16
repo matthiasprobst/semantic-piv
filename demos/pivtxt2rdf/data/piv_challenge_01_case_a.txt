@@ -1,0 +1,40 @@
+Open Package Case A
+
+Description
+    Strong vortex (provided by Kaehler) < real > [1280 x 1024]
+
+Readme File
+
+    ----------------------------------------------------------------------------
+    Instructions for the analysis of case A :
+    Loss of seeding in the core of a tip vortex
+    26.10.2000 		christian.kaehler@dlr.de
+
+    Image A001_1.tif and A001_2.tif were recorded at the DNW-LLF in order
+    to study experimentally the wake vortex formation behind a transport
+    aircraft (DLR ALVAST half model) in landing configuration (U=60 m/s,
+    main flow direction is perpendicular to the light-sheet plane). The
+    measurement position was 1.64 m behind the wing tip and the field of
+    view is 170 mm by 140 mm. The images were selected as strong gradients,
+    loss of image density, and varying particle image sizes are common
+    problems for many PIV applications in large wind tunnels.
+
+
+    Camera characteristics:
+
+    Type                                	PCO SensiCam, see http://www.pco.de
+    Sensor technology              		Progressive Scan
+    Resolution                          	1280 pixel x1024 pixel.
+    Pixel   size                       	6.7 micrometer x 6.7 micrometer
+    Dynamic range                     	12 bits (Peltier cooled)
+    Quantum efficiency             		typ 40 %
+    Full well capacity                  	25000 e
+    Readout noise @ 12.5MHz			7 ... 8 e
+
+
+Download
+    Zipped File(1.8MB)
+
+        Image #1(1.3MB)
+        Image #2(1.3MB)
+
