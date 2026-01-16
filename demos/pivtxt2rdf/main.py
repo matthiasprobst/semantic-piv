@@ -10,7 +10,7 @@ import dotenv
 from openai import OpenAI  # For API compatibility
 from pyshacl import validate
 from rdflib import Graph
-
+from utils import compact_turtle_file
 dotenv.load_dotenv(".env")
 
 # read the system prompt:
@@ -41,27 +41,34 @@ def main(input_file, ontology_file, prompt_only, base_uri, llm_url, model):
     with open(input_file, 'r', encoding='utf-8') as f:
         text_content = f.read()
 
-    ont_graph = Graph().parse(ontology_file, format='turtle')
-
+    ontology_ttl_compact = compact_turtle_file(ontology_file)
     # LLM prompt for constrained RDF generation
-    USER_PROMPT = f"""
-BASE_URI (for minting IRIs; optional):
+    USER_PROMPT = f"""REFERENCE MATERIAL (DO NOT COPY TO OUTPUT)
+
+ONTOLOGY TTL (authoritative vocabulary and shapes; for reference ONLY, never repeat or echo):
+{ontology_ttl_compact}
+
+END OF ONTOLOGY TTL
+
+CONFIGURATION
+BASE_URI (for minting IRIs; optional, may be empty):
 {base_uri}
 
-TEXT INPUT (only source of facts):
+INPUT DATA (ONLY source of facts)
 {text_content}
 
-TASK:
-- Convert TEXT INPUT into Turtle RDF instance data.
-- Extract PIV case metadata AND provenance/curation metadata when present:
-  - case title/name/identifier (e.g., "Open Package Case A")
-  - description/notes
-  - dates (e.g., 26.10.2000)
-  - contact/author/contributor if an email/name exists (use ontology-allowed terms only)
-  - facility/location/experiment context (e.g., DNW-LLF, model, U=60 m/s, FOV)
-  - camera characteristics table
-- Use BASE_URI when minting IRIs; otherwise prefer blank nodes.
-- Output ONLY Turtle now.
+TASK
+- Generate Turtle RDF INSTANCE DATA describing the PIV challenge case.
+- Use ONLY prefixes, classes, properties, and datatypes that appear in the ONTOLOGY TTL above.
+- The ONTOLOGY TTL is reference material ONLY and MUST NOT appear in the output.
+- Assert ONLY facts explicitly stated in INPUT DATA (no inference, no guessing).
+- If a fact cannot be expressed using the ontology vocabulary, OMIT it.
+- Prefer blank nodes for nested structures.
+- If BASE_URI is provided, mint IRIs under BASE_URI for top-level resources.
+- Ensure that EVERY prefix you use is declared in your output.
+- Output ONLY raw Turtle RDF now (instance data + needed @prefix lines).
+
+OUTPUT (Turtle only, no comments, no prose):
 """
 
     if prompt_only:
@@ -99,6 +106,7 @@ TASK:
         sys.exit(1)
 
     # Merge ontology for validation context
+    ont_graph = Graph().parse(ontology_file, format='turtle')
     full_graph = ont_graph + data_graph
 
     conforms, v_graph, v_text = validate(
