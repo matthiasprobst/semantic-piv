@@ -16,6 +16,9 @@ This demo shows how to use a simple Python script to convert PIV text data into 
 
 ## Example usage:
 
+Prerequisites:
+- An OpenAI API key (sign up at https://platform.openai.com/)
+
 1. Navigate to this directory:
    ```bash
    cd demos/pivtxt2rdf
@@ -35,3 +38,33 @@ This demo shows how to use a simple Python script to convert PIV text data into 
    ```bash
    python .\main.py .\data\piv_challenge_01_case_a.html .\ontologies\pivmeta.ttl
     ```
+   
+The example result for the sample PIV Challenge dataset Case A can be:
+
+```turtle
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m4i: <http://w3id.org/nfdi4ing/metadata4ing#> .
+@prefix piv: <https://matthiasprobst.github.io/pivmeta#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix schema: <https://schema.org/> .
+
+<http://example.org/case-a> a piv:PIVDataset ;
+  dcterms:title "Open Package Case A" ;
+  dcterms:description "Strong vortex (provided by Kaehler) < real > [1280 x 1024]" ;
+  piv:hasSetup _:setup ;
+  dcterms:creator _:person_kaehler ;
+  prov:wasGeneratedBy <urn:activity:llm-parse> .
+
+_:setup a piv:ExperimentalSetup ;
+  <http://purl.obolibrary.org/obo/BFO_0000051> _:camera .
+
+_:camera a piv:DigitalCamera ;
+  piv:fnumber "PCO SensiCam" .
+
+_:person_kaehler a schema:Person ;
+  schema:familyName "Kaehler" .
+
+_:person_kaehler_contact a schema:Person ;
+  schema:email "christian.kaehler@dlr.de" .
+```
