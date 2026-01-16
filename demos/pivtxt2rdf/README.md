@@ -1,6 +1,14 @@
 # pivtxt2rdf
 
-## Idea
+## What it does
+
+The script...
+- takes a PIV text file as input
+- takes an ontology (for now pivmeta) as input
+- it uses an LLM (OpenAI GPT 5.2) and asks to generate a TTL RDF description of the PIV experiment described in the text file
+
+## Motivation
+- Writing RDF metadata is difficult and requires expertise - not is (maybe) the only way to achieve FAIR data
 - Often PIV data is shared in text format, see for example the PIV Challenge datasets (https://www.pivchallenge.org/)
 - Using an ontology in combination with an LLM, we can extract semantic metadata from text input and convert it to RDF format
 - Inspect the resulting RDF to see how the PIVMeta ontology can be used to describe PIV experiments
@@ -39,7 +47,8 @@ Prerequisites:
    python .\main.py .\data\piv_challenge_01_case_a.html .\ontologies\pivmeta.ttl
     ```
    
-The example result for the sample PIV Challenge dataset Case A can be:
+The example result for a CLI call like `python .\main.py .\data\piv_challenge_01_case_a.html .\ontologies\pivmeta.ttl`, 
+which uses the sample PIV Challenge dataset Case A with the PIVMeta ontology can look like this:
 
 ```turtle
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
