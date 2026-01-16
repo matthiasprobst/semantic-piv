@@ -38,8 +38,12 @@ def _get_token():
               help='LLM model name (default: ChatGPT-like gpt-5.2)')
 def main(input_file, ontology_file, prompt_only, base_uri, llm_url, model):
     # Read files
-    with open(input_file, 'r', encoding='utf-8') as f:
-        text_content = f.read()
+    if pathlib.Path(input_file).suffix.lower() == '.pdf':
+        from utils import pdf2text
+        text_content = pdf2text(input_file)
+    else:
+        with open(input_file, 'r', encoding='utf-8') as f:
+            text_content = f.read()
 
     ontology_ttl_compact = compact_turtle_file(ontology_file)
     # LLM prompt for constrained RDF generation
@@ -143,6 +147,7 @@ if __name__ == '__main__':
     """example usage:
     
     python .\main.py .\data\piv_challenge_01_case_a.txt .\ontologies\pivmeta.ttl
+    python .\main.py .\data\4th_PIV-Challenge_Instructions_Case_B.pdf .\ontologies\pivmeta.ttl
     
     """
-    main(["./data/piv_challenge_01_case_a.txt", "./ontologies/pivmeta.ttl"])
+    main()

@@ -2,3 +2,4 @@ click
 openai
 pyshacl
 requests
+pypdf
