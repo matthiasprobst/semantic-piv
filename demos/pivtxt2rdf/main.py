@@ -50,6 +50,10 @@ CONFIGURATION
 BASE_URI (for minting IRIs; optional, may be empty):
 {base_uri}
 
+ADDITIONAL RULES
+- Try extracting person information and use PROV-O (https://www.w3.org/TR/prov-o/) for agents.
+- Try extracting unit information where possible and use qudt (http://qudt.org/schema/qudt/) for quantities with units.
+
 INPUT DATA (ONLY source of facts)
 {text_content}
 

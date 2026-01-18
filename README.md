@@ -108,6 +108,45 @@ Include machine-readable metadata alongside your published PIV datasets.
 
 ---
 
+## 🧭 Conceptual Flow
+
+Below is a compact graphical explanation of the core idea: any PIV data (one or multiple files) enters two parallel extraction paths and both produce RDF that is finally checked by SHACL validation.
+
+Mermaid (renderable on GitHub and many Markdown previewers):
+
+```mermaid
+flowchart TD
+  A[PIV data\n(one or multiple files)]
+  A --> B{Extraction path}
+  B -->|a. Flexible (AI + Ontology)| C[LLM + Ontology\n(semantic extraction & mapping)]
+  B -->|b. Deterministic| D[Deterministic Extractors\n(rules/parsers for known formats)]
+  C --> E[RDF Generation\n(serialize to Turtle/TTL)]
+  D --> E
+  E --> F[SHACL Validation\n(quality & consistency checks)]
+  F -->|pass| G[Valid RDF metadata\n(publish/share/index)]
+  F -->|fail| H[Validation errors / human review]
+```
+
+ASCII fallback (plain text):
+
+PIV data (one or multiple files)
+  |
+  +---> [a] LLM + Ontology (flexible semantic extraction) ---> RDF Generation ---> SHACL Validation ---> Valid RDF / Errors
+  |
+  +---> [b] Deterministic Extractors (format-specific parsers) ---> RDF Generation ---> SHACL Validation ---> Valid RDF / Errors
+
+Notes:
+- Path (a) LLM + Ontology: uses a language model together with the PIVMeta ontology to interpret free-text descriptions and map concepts to ontology classes and properties. This path is more flexible for unstructured or varied inputs but may require prompt engineering and review.
+- Path (b) Deterministic Extractors: uses parser rules, regular expressions, or format-specific readers (e.g., .attrs, .mat, .vc7) to extract well-defined fields. This path is less flexible but more predictable and explainable.
+- Both paths converge on RDF generation (Turtle/TTL) and are checked with SHACL to ensure the produced metadata meets quality and schema constraints. Validation failures should trigger human review and possible correction.
+
+Trade-offs and suggestions:
+- Use the deterministic path for well-known, standardized input formats to maximize precision.
+- Use the LLM+ontology path for ambiguous, free-text, or poorly documented inputs to extract richer semantics.
+- Combine both: run deterministic extractors first, then run the LLM to fill gaps or provide higher-level context.
+
+---
+
 ## 📊 Supported Features
 
 - ✅ **PIVMeta Ontology** - Standard vocabulary for PIV experiments
